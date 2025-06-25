@@ -1,11 +1,12 @@
 const express = require("express");
-const routes = require("./routes/routes");
-
 const app = express();
+
 app.use(express.json());
-app.use(routes);
+app.use('/api/users', require("./routes/userRoutes"));
+app.use('/api/auth', require("./routes/authRoutes"));
+app.use('/auth', require('./routes/signRoutes'));
 
 const port = process.env.PORT || 81;
 app.listen(port, () => {
-  console.log(`Firebase Server is running on port ${port}`);
+  console.log(`IVAN-Firebase Server is running on port ${port}`);
 });
