@@ -45,3 +45,7 @@ Contributions are welcome! Please open an issue or submit a pull request.
 ## License
 
 This project is licensed under the MIT License.
+
+## For production
+
+No olvidar agregar el file src/config/ivan-drive-firebase-adminsdk-o379n-a67f31685f.json, que debe contener el secreto para accedder a Firebase

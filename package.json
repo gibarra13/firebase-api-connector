@@ -4,7 +4,7 @@
   "description": "A Node.js API application using Firebase Admin SDK",
   "main": "index.js",
   "scripts": {
-    "start": "node src/app.js",
+    "start": "node --trace-deprecation src/app.js",
     "dev": "nodemon src/app.js"
   },
   "dependencies": {

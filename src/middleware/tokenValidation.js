@@ -1,7 +1,6 @@
-const keys = require("../config/keys");
 const jwt = require("jsonwebtoken");
 
-const hasRole = (token) => {
+const hasRole = (token, conn_env) => {
   try {
     if (!token) {
       return false;
@@ -12,8 +11,8 @@ const hasRole = (token) => {
     }
 
     // Verificar el token usando la clave secreta
-    const decoded = jwt.verify(fixedToken, keys.SECRET_KEY);
-    return decoded.role && decoded.role.includes(keys.SYS_ROLE);
+    const decoded = jwt.verify(fixedToken, conn_env.secretKey);
+    return decoded.role && decoded.role.includes(conn_env.role);
   } catch (error) {
     return false;
   }
