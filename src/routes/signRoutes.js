@@ -3,10 +3,11 @@ const router = express.Router();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { getRemoteConfigPropertiesForLogin } = require('../controllers/remoteConfigController');
+const { resetPassword } = require('../controllers/userAuthController');
 
 // Mock de base de datos de usuarios (reemplazar con una base de datos real)
 let users = [];
-//SOlo para efectos de prueba, no usar en producción
+//SOLO para efectos de prueba, no usar en producción
 router.post("/register", async (req, res) => {
   try {
     const hashedPassword = await bcrypt.hash(req.body.password, 10);
@@ -16,6 +17,26 @@ router.post("/register", async (req, res) => {
     res.status(201).send("Usuario registrado");
   } catch {
     res.status(500).send();
+  }
+});
+
+router.post("/rp", async (req, res) => {
+  const email = req.body.email;
+  if (!email) {
+    return res.status(400).send("Email is required");
+  }
+
+  try {
+    // Aquí deberías enviar el enlace de restablecimiento de contraseña al correo electrónico del usuario
+    const resetLink = await resetPassword(email);
+    console.log(`Password reset link sent to ${email}: ${resetLink}`);
+    
+    // Simular el envío del enlace de restablecimiento
+    res.status(200).send(resetLink);
+    // res.status(200).send(`Password reset link sent to ${email}`);
+  } catch (error) { 
+    console.error("Error sending reset password link:", error);
+    res.status(500).send("Internal Server Error");
   }
 });
 

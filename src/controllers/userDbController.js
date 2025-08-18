@@ -14,6 +14,13 @@ const getDbUser = async (id) => {
   return snapshot.val();
 };
 
+// Obtener todos los usuarios
+const getDbUsers = async (id) => {
+  const usersRef = db.ref(`users`);
+  const snapshot = await usersRef.once("value");
+  return snapshot.val();
+};
+
 // Eliminar un usuario por ID
 const deleteDbUser = async (id) => {
   const userRef = db.ref(`users/${id}`);
@@ -28,5 +35,5 @@ const patchDbUser = async (id, userProp) => {
   return { message: `User ${id} updated` };
 };
 
-module.exports = { createDbUser, getDbUser, deleteDbUser, patchDbUser };
+module.exports = { createDbUser, getDbUser, getDbUsers, deleteDbUser, patchDbUser };
 // Compare this snippet from src/controllers/userController.js:  

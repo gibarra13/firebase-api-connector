@@ -1,5 +1,5 @@
 const express = require("express");
-const { createDbUser, getDbUser, deleteDbUser, patchDbUser, } = require("../controllers/userDbController");
+const { createDbUser, getDbUser, getDbUsers, deleteDbUser, patchDbUser, } = require("../controllers/userDbController");
 const { createVehicle, getVehicles, getVehicle, patchVehicle, putVehicleLocation, patchVehicleLocation } = require("../controllers/vehicleDbController");
 const authenticateJWT = require("../middleware/authenticateJWT");
 
@@ -19,6 +19,17 @@ router.post("", authenticateJWT, async (req, res) => {
     res.status(201).json(result);
   } catch (error) {
     console.error("Error creating user:", error);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+router.get("", authenticateJWT, async (req, res) => {
+  try {
+    const users = await getDbUsers();
+    if (!users) return res.status(404).send("User not found");
+    res.json(users);
+  } catch (error) {
+    console.error("Error fetching user:", error);
     res.status(500).send("Internal Server Error");
   }
 });

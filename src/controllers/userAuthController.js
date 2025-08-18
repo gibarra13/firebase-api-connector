@@ -1,10 +1,10 @@
 'use strict';
-const { getAuth } = require('firebase-admin/auth');
+const { auth } = require("../config/firebase");
 
 //get user from firebase
 const getUserAuth = async (userId) => {
     try {
-        const userRecord = await getAuth().getUser(userId);
+        const userRecord = await auth.getUser(userId);
         return userRecord;
     } catch (error) {
         console.error("Error fetching user:", error);
@@ -15,7 +15,7 @@ const getUserAuth = async (userId) => {
 //get user by email from firebase
 const getUserAuthByEmail = async (email) => {
     try {
-        const userRecord = await getAuth().getUserByEmail(email);
+        const userRecord = await auth.getUserByEmail(email);
         return userRecord;
     } catch (error) {
         console.error("Error fetching user by email:", error);
@@ -27,7 +27,7 @@ const getUserAuthByEmail = async (email) => {
 const createUserAuth = async (user) => {
   let userRecord
     try {
-          userRecord = await getAuth().createUser({
+          userRecord = await auth.createUser({
             email: user.email,
             emailVerified: false,
             password: user.password,
@@ -46,7 +46,7 @@ const createUserAuth = async (user) => {
 //delete user in firebase
 const deleteUserAuth = async (userId) => {
     try {
-        await getAuth().deleteUser(userId);
+        await auth.deleteUser(userId);
         return { message: `User ${userId} deleted` };
     } catch (error) {
         console.error("Error deleting user:", error);
@@ -57,7 +57,7 @@ const deleteUserAuth = async (userId) => {
 //update user in firebase
 const updateUserAuth = async (userId, user) => {
     try {
-        const userRecord = await getAuth().updateUser(userId, {
+        const userRecord = await auth.updateUser(userId, {
             email: user.email,
             password: user.password,
             displayName: user.displayName,
@@ -70,10 +70,23 @@ const updateUserAuth = async (userId, user) => {
     }
 };
 
+const resetPassword = async (email) => {
+    try {
+        const userRecord = await auth.getUserByEmail(email);
+        const resetLink = await auth.generatePasswordResetLink(email);
+        // Here you would send the reset link to the user's email
+        return { message: `Password reset link sent to ${email}`, resetLink };
+    } catch (error) {
+        console.error("Error resetting password:", error);
+        throw error;
+    }
+};
+
+
 //update user password in firebase
 const updateUserAuthPassword = async (userId, password) => {
     try {
-        const userRecord = await getAuth().updateUser(userId, {
+        const userRecord = await auth.updateUser(userId, {
             password: password
         });
         return userRecord;
@@ -86,7 +99,7 @@ const updateUserAuthPassword = async (userId, password) => {
 //update user email in firebase
 const updateUserAuthEmail = async (userId, email) => {
     try {
-        const userRecord = await getAuth().updateUser(userId, {
+        const userRecord = await auth.updateUser(userId, {
             email: email
         });
         return userRecord;
@@ -99,7 +112,7 @@ const updateUserAuthEmail = async (userId, email) => {
 //update user display name in firebase
 const updateUserAuthDisplayName = async (userId, displayName) => {
     try {
-        const userRecord = await getAuth().updateUser(userId, {
+        const userRecord = await auth.updateUser(userId, {
             displayName: displayName
         });
         return userRecord;
@@ -112,7 +125,7 @@ const updateUserAuthDisplayName = async (userId, displayName) => {
 //update user disabled in firebase
 const updateUserAuthDisabled = async (userId, disabled) => {
     try {
-        const userRecord = await getAuth().updateUser(userId, {
+        const userRecord = await auth.updateUser(userId, {
             disabled: disabled
         });
         return userRecord;
@@ -125,7 +138,7 @@ const updateUserAuthDisabled = async (userId, disabled) => {
 //update user custom claims in firebase
 const updateUserAuthCustomClaims = async (userId, claims) => {
     try {
-        const userRecord = await getAuth().setCustomUserClaims(userId, claims);
+        const userRecord = await auth.setCustomUserClaims(userId, claims);
         return userRecord;
     } catch (error) {
         console.error("Error updating user custom claims:", error);
@@ -136,7 +149,7 @@ const updateUserAuthCustomClaims = async (userId, claims) => {
 //update user tokens in firebase
 const updateUserAuthTokens = async (userId, tokens) => {
     try {
-        const userRecord = await getAuth().setCustomUserClaims(userId, { tokens });
+        const userRecord = await auth.setCustomUserClaims(userId, { tokens });
         return userRecord;
     } catch (error) {
         console.error("Error updating user tokens:", error);
@@ -147,7 +160,7 @@ const updateUserAuthTokens = async (userId, tokens) => {
 //update user tokens valid in firebase
 const updateUserAuthTokensValid = async (userId, tokensValid) => {
     try {
-        const userRecord = await getAuth().setCustomUserClaims(userId, { tokensValid });
+        const userRecord = await auth.setCustomUserClaims(userId, { tokensValid });
         return userRecord;
     } catch (error) {
         console.error("Error updating user tokens valid:", error);
@@ -158,7 +171,7 @@ const updateUserAuthTokensValid = async (userId, tokensValid) => {
 //update user tokens invalid in firebase
 const updateUserAuthTokensInvalid = async (userId, tokensInvalid) => {
     try {
-        const userRecord = await getAuth().setCustomUserClaims(userId, { tokensInvalid });
+        const userRecord = await auth.setCustomUserClaims(userId, { tokensInvalid });
         return userRecord;
     } catch (error) {
         console.error("Error updating user tokens invalid:", error);
@@ -169,7 +182,7 @@ const updateUserAuthTokensInvalid = async (userId, tokensInvalid) => {
 //update user tokens expired in firebase
 const updateUserAuthTokensExpired = async (userId, tokensExpired) => {
     try {
-        const userRecord = await getAuth().setCustomUserClaims(userId, { tokensExpired });
+        const userRecord = await auth.setCustomUserClaims(userId, { tokensExpired });
         return userRecord;
     } catch (error) {
         console.error("Error updating user tokens expired:", error);
@@ -180,7 +193,7 @@ const updateUserAuthTokensExpired = async (userId, tokensExpired) => {
 //update user tokens revoked in firebase
 const updateUserAuthTokensRevoked = async (userId, tokensRevoked) => {
     try {
-        const userRecord = await getAuth().setCustomUserClaims(userId, { tokensRevoked });
+        const userRecord = await auth.setCustomUserClaims(userId, { tokensRevoked });
         return userRecord;
     } catch (error) {
         console.error("Error updating user tokens revoked:", error);
@@ -191,7 +204,7 @@ const updateUserAuthTokensRevoked = async (userId, tokensRevoked) => {
 //update user tokens blacklisted in firebase
 const updateUserAuthTokensBlacklisted = async (userId, tokensBlacklisted) => {
     try {
-        const userRecord = await getAuth().setCustomUserClaims(userId, { tokensBlacklisted });
+        const userRecord = await auth.setCustomUserClaims(userId, { tokensBlacklisted });
         return userRecord;
     } catch (error) {
         console.error("Error updating user tokens blacklisted:", error);
@@ -202,7 +215,7 @@ const updateUserAuthTokensBlacklisted = async (userId, tokensBlacklisted) => {
 //update user tokens whitelisted in firebase
 const updateUserAuthTokensWhitelisted = async (userId, tokensWhitelisted) => {
     try {
-        const userRecord = await getAuth().setCustomUserClaims(userId, { tokensWhitelisted });
+        const userRecord = await auth.setCustomUserClaims(userId, { tokensWhitelisted });
         return userRecord;
     } catch (error) {
         console.error("Error updating user tokens whitelisted:", error);
@@ -213,7 +226,7 @@ const updateUserAuthTokensWhitelisted = async (userId, tokensWhitelisted) => {
 //listar todos los usuarios de firebase
 const listAllUsers = async (nextPageToken) => {
     try {
-        const listUsersResult = await getAuth().listUsers(1000, nextPageToken);
+        const listUsersResult = await auth.listUsers(1000, nextPageToken);
         const users = listUsersResult.users.map(user => ({
             uid: user.uid,
             email: user.email,
@@ -235,6 +248,7 @@ module.exports = {
     createUserAuth,
     deleteUserAuth,
     updateUserAuth,
+    resetPassword,
     updateUserAuthPassword,
     updateUserAuthEmail,
     updateUserAuthDisplayName,
