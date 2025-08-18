@@ -12,4 +12,6 @@ admin.initializeApp({
 
 // As an admin, the app has access to read and write all data, regardless of Security Rules
 var db = admin.database();
-module.exports = { admin, db };
+var rc = admin.remoteConfig();
+var auth = admin.auth();
+module.exports = { admin, db, rc, auth };

@@ -1,11 +1,11 @@
-const admin = require("firebase-admin");
+const { rc } = require("../config/firebase");
 
 // Asegúrate de inicializar Firebase Admin antes de usarlo
 // admin.initializeApp({ ... });
 
 async function getRemoteConfigProperties() {
   try {
-    const remoteConfig = await admin.remoteConfig().getTemplate();
+    const remoteConfig = await rc.getTemplate();
     const parameters = remoteConfig.parameters || {};
     return parameters;
   } catch (error) {
@@ -15,7 +15,7 @@ async function getRemoteConfigProperties() {
 
 async function getRemoteConfigPropertiesByKey(key) {
   try {
-    const remoteConfig = await admin.remoteConfig().getTemplate();
+    const remoteConfig = await rc.getTemplate();
     const parameters = remoteConfig.parameters || {};
     return parameters[key] || null;
   } catch (error) {
@@ -25,7 +25,7 @@ async function getRemoteConfigPropertiesByKey(key) {
 
 async function getRemoteConfigPropertiesForLogin() {
   try {
-    const remoteConfig = await admin.remoteConfig().getTemplate();
+    const remoteConfig = await rc.getTemplate();
     const parameters = remoteConfig.parameters || {};
     const user = {
       user: parameters["connector_sys_user"].defaultValue.value || null,

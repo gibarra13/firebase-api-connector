@@ -38,9 +38,10 @@ This project is a Node.js application that integrates with Firebase.
     npm start
     ```
 
-## Contributing
+## Considerations
 
-Contributions are welcome! Please open an issue or submit a pull request.
+1.  Realizar Login para obtener el accessToken
+2.  Usar el accessToken como metodo de autenticacion (Bearer Token) para ejecutar el resto de requests
 
 ## License
 
