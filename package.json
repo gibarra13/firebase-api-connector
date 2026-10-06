@@ -3,6 +3,9 @@
   "version": "1.0.2",
   "description": "A Node.js API application using Firebase Admin SDK",
   "main": "index.js",
+  "overrides": {
+    "uuid": "^14.0.0"
+  },
   "scripts": {
     "start": "node --trace-deprecation src/app.js",
     "dev": "nodemon src/app.js"
